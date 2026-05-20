@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rahul Mandal — Data Scientist</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            slate900: '#0B132B',
+            slate800: '#0F172A',
+            surface: '#1C2541',
+            surfaceLight: '#1E293B',
+            border: '#334155',
+            accent: '#38BDF8',
+            accentAlt: '#06B6D4',
+            muted: '#94A3B8',
+            bright: '#E2E8F0',
+          },
+          fontFamily: {
+            mono: ['"Space Mono"', 'monospace'],
+            sans: ['"DM Sans"', 'sans-serif'],
+          },
+          boxShadow: {
+            glow: '0 0 20px rgba(56,189,248,0.35), 0 0 60px rgba(56,189,248,0.15)',
+            glowSm: '0 0 10px rgba(56,189,248,0.3)',
+            card: '0 4px 32px rgba(0,0,0,0.5)',
+          },
+          animation: {
+            fadeUp: 'fadeUp 0.7s ease forwards',
+            blink: 'blink 1.1s step-end infinite',
+            pulse2: 'pulse2 3s ease-in-out infinite',
+            float: 'float 5s ease-in-out infinite',
+          },
+          keyframes: {
+            fadeUp: {
+              '0%': { opacity: '0', transform: 'translateY(28px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+            blink: {
+              '0%,100%': { opacity: '1' },
+              '50%': { opacity: '0' },
+            },
+            pulse2: {
+              '0%,100%': { boxShadow: '0 0 15px rgba(56,189,248,0.2)' },
+              '50%': { boxShadow: '0 0 35px rgba(56,189,248,0.55)' },
+            },
+            float: {
+              '0%,100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-18px)' },
+            },
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    /* ─── Global ─── */
+    * { box-sizing: border-box; }
+    html { font-family: 'DM Sans', sans-serif; }
+    body {
+      background-color: #0B132B;
+      color: #E2E8F0;
+      overflow-x: hidden;
+    }
+
+    /* Grid noise overlay for depth */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(56,189,248,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(56,189,248,0.025) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Radial hero glow */
+    .hero-glow {
+      position: absolute;
+      top: -120px;
+      left: -120px;
+      width: 620px;
+      height: 620px;
+      background: radial-gradient(circle, rgba(56,189,248,0.12) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .hero-glow-r {
+      position: absolute;
+      bottom: -80px;
+      right: -80px;
+      width: 440px;
+      height: 440px;
+      background: radial-gradient(circle, rgba(6,182,212,0.10) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Sticky header transition */
+    #navbar { transition: background 0.35s ease, box-shadow 0.35s ease, backdrop-filter 0.35s ease; }
+    #navbar.scrolled {
+      background: rgba(11,19,43,0.92) !important;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 2px 28px rgba(0,0,0,0.6);
+    }
+
+    /* Glowing accent button */
+    .btn-glow {
+      background: linear-gradient(135deg, #38BDF8 0%, #06B6D4 100%);
+      color: #0B132B;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      box-shadow: 0 0 16px rgba(56,189,248,0.45);
+      transition: box-shadow 0.3s ease, transform 0.2s ease;
+    }
+    .btn-glow:hover {
+      box-shadow: 0 0 36px rgba(56,189,248,0.75);
+      transform: translateY(-2px);
+    }
+
+    /* Outline button */
+    .btn-outline {
+      border: 1.5px solid #38BDF8;
+      color: #38BDF8;
+      font-weight: 600;
+      transition: background 0.25s ease, color 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
+    }
+    .btn-outline:hover {
+      background: rgba(56,189,248,0.12);
+      transform: translateY(-2px);
+      box-shadow: 0 0 18px rgba(56,189,248,0.3);
+    }
+
+    /* Card hover */
+    .card-hover {
+      border: 1px solid #334155;
+      background: #1C2541;
+      transition: border-color 0.28s ease, box-shadow 0.28s ease, transform 0.28s ease;
+    }
+    .card-hover:hover {
+      border-color: rgba(56,189,248,0.55);
+      box-shadow: 0 0 26px rgba(56,189,248,0.18), 0 8px 32px rgba(0,0,0,0.4);
+      transform: translateY(-4px);
+    }
+
+    /* Skill icon card */
+    .skill-card {
+      border: 1px solid #334155;
+      background: #1C2541;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem 1rem;
+      border-radius: 12px;
+      transition: all 0.28s ease;
+      cursor: default;
+    }
+    .skill-card:hover {
+      border-color: #38BDF8;
+      background: rgba(56,189,248,0.07);
+      box-shadow: 0 0 20px rgba(56,189,248,0.22);
+      transform: translateY(-5px);
+    }
+    .skill-card:hover .skill-icon { color: #38BDF8; }
+    .skill-icon {
+      font-size: 2rem;
+      color: #94A3B8;
+      margin-bottom: 0.6rem;
+      transition: color 0.28s ease;
+    }
+
+    /* Social card */
+    .social-card {
+      border: 1px solid #334155;
+      background: #1C2541;
+      border-radius: 10px;
+      padding: 0.85rem 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      text-decoration: none;
+      color: #94A3B8;
+      font-size: 0.88rem;
+      font-family: 'Space Mono', monospace;
+      transition: all 0.25s ease;
+    }
+    .social-card:hover {
+      border-color: #38BDF8;
+      color: #38BDF8;
+      background: rgba(56,189,248,0.08);
+      box-shadow: 0 0 14px rgba(56,189,248,0.2);
+    }
+
+    /* Section label */
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      color: #38BDF8;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Tag pill */
+    .tag {
+      background: rgba(56,189,248,0.12);
+      border: 1px solid rgba(56,189,248,0.3);
+      color: #38BDF8;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      padding: 0.22rem 0.65rem;
+      border-radius: 999px;
+    }
+
+    /* Timeline dot */
+    .timeline-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #38BDF8;
+      box-shadow: 0 0 10px rgba(56,189,248,0.6);
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+
+    /* Cert badge */
+    .cert-badge {
+      border: 1px solid #334155;
+      border-left: 3px solid #38BDF8;
+      background: #1C2541;
+      border-radius: 8px;
+      padding: 0.9rem 1.1rem;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+    .cert-badge:hover {
+      border-left-color: #06B6D4;
+      box-shadow: 0 0 16px rgba(56,189,248,0.15);
+    }
+
+    /* Contact form input */
+    .form-input {
+      width: 100%;
+      background: #1E293B;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 0.85rem 1rem;
+      color: #E2E8F0;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+    .form-input::placeholder { color: #475569; }
+    .form-input:focus {
+      border-color: #38BDF8;
+      box-shadow: 0 0 12px rgba(56,189,248,0.18);
+    }
+
+    /* Scroll fade-in observer */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Mobile menu */
+    #mobile-menu {
+      display: none;
+      flex-direction: column;
+      gap: 0.25rem;
+      background: rgba(11,19,43,0.97);
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 1rem;
+      position: absolute;
+      top: 100%;
+      right: 1rem;
+      min-width: 200px;
+      z-index: 999;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+    }
+    #mobile-menu.open { display: flex; }
+    #mobile-menu a {
+      padding: 0.6rem 0.9rem;
+      border-radius: 8px;
+      color: #94A3B8;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.83rem;
+      text-decoration: none;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    #mobile-menu a:hover { background: rgba(56,189,248,0.1); color: #38BDF8; }
+
+    /* Cursor blink */
+    .cursor::after {
+      content: '|';
+      animation: blink 1.1s step-end infinite;
+      color: #38BDF8;
+      margin-left: 2px;
+    }
+
+    /* Floating illustration */
+    .illus-container {
+      animation: float 5s ease-in-out infinite;
+    }
+
+    /* Section divider */
+    .divider {
+      width: 48px;
+      height: 3px;
+      background: linear-gradient(90deg, #38BDF8, #06B6D4);
+      border-radius: 99px;
+      margin-bottom: 1rem;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0B132B; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 99px; }
+    ::-webkit-scrollbar-thumb:hover { background: #38BDF8; }
+
+    /* Nav link underline */
+    .nav-link {
+      position: relative;
+      color: #94A3B8;
+      text-decoration: none;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      transition: color 0.25s ease;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: -3px;
+      width: 0; height: 1.5px;
+      background: #38BDF8;
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover { color: #38BDF8; }
+    .nav-link:hover::after { width: 100%; }
+
+    z-index layer helpers
+    .z-base { z-index: 1; position: relative; }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     STICKY NAVIGATION
+════════════════════════════════════════════ -->
+<header id="navbar" class="fixed top-0 left-0 right-0 z-50 px-6 py-4">
+  <nav class="max-w-6xl mx-auto flex items-center justify-between">
+    <!-- Brand -->
+    <a href="#hero" class="font-mono text-sm font-bold tracking-widest text-white hover:text-accent transition-colors duration-200 flex items-center gap-2">
+      <span class="w-2 h-2 rounded-full bg-accent inline-block" style="box-shadow:0 0 8px #38BDF8;"></span>
+      RAHUL MANDAL
+    </a>
+
+    <!-- Desktop links -->
+    <div class="hidden md:flex items-center gap-7">
+      <a href="#about"     class="nav-link">About</a>
+      <a href="#skills"    class="nav-link">Skills</a>
+      <a href="#projects"  class="nav-link">Projects</a>
+      <a href="#education" class="nav-link">Education</a>
+      <a href="#contact"   class="nav-link">Contact</a>
+    </div>
+
+    <!-- Hamburger -->
+    <button id="hamburger" class="md:hidden text-muted hover:text-accent transition-colors p-1" aria-label="Toggle menu">
+      <i class="fa-solid fa-bars-staggered text-lg"></i>
+    </button>
+
+    <!-- Mobile menu dropdown -->
+    <div id="mobile-menu">
+      <a href="#about"     onclick="closeMobile()">About</a>
+      <a href="#skills"    onclick="closeMobile()">Skills</a>
+      <a href="#projects"  onclick="closeMobile()">Projects</a>
+      <a href="#education" onclick="closeMobile()">Education</a>
+      <a href="#contact"   onclick="closeMobile()">Contact</a>
+    </div>
+  </nav>
+</header>
+
+<!-- ═══════════════════════════════════════════
+     HERO SECTION
+════════════════════════════════════════════ -->
+<section id="hero" class="relative min-h-screen flex items-center pt-24 pb-16 px-6 overflow-hidden">
+  <div class="hero-glow"></div>
+  <div class="hero-glow-r"></div>
+
+  <div class="max-w-6xl mx-auto w-full z-base">
+    <div class="grid md:grid-cols-2 gap-12 items-center">
+
+      <!-- ── Left Column ── -->
+      <div>
+        <!-- Status badge -->
+        <div class="inline-flex items-center gap-2 bg-surface border border-border rounded-full px-4 py-1.5 mb-6 text-xs font-mono text-accent">
+          <span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span>
+          Available for Opportunities
+        </div>
+
+        <!-- Name -->
+        <h1 class="font-sans font-bold leading-none mb-2" style="font-size:clamp(2.4rem,6vw,4rem);">
+          <span class="text-bright">Rahul</span>
+          <span class="block" style="color:#38BDF8; text-shadow: 0 0 28px rgba(56,189,248,0.5);">Mandal</span>
+        </h1>
+
+        <!-- Title with cursor -->
+        <p class="font-mono text-lg text-muted mb-5 cursor">Data Scientist</p>
+
+        <!-- Tagline -->
+        <p class="text-bright/75 leading-relaxed mb-8 max-w-md" style="font-size:1.05rem;">
+          Results-driven Data Scientist adept at translating complex data into actionable business insights and building end-to-end ML pipelines.
+        </p>
+
+        <!-- CTA Buttons -->
+        <div class="flex flex-wrap gap-3 mb-9">
+          <a href="#about" class="btn-glow px-6 py-3 rounded-lg text-sm inline-flex items-center gap-2">
+            <i class="fa-solid fa-arrow-down text-xs"></i> Learn More
+          </a>
+          <a href="#contact" class="btn-outline px-6 py-3 rounded-lg text-sm inline-flex items-center gap-2">
+            <i class="fa-regular fa-envelope text-xs"></i> Contact Me
+          </a>
+        </div>
+
+        <!-- Social Matrix -->
+        <div class="flex flex-wrap gap-3">
+          <a href="https://github.com/rahul261098" target="_blank" rel="noopener" class="social-card">
+            <i class="fa-brands fa-github text-base"></i> GitHub
+          </a>
+          <a href="https://wa.link/p1uoki" target="_blank" rel="noopener" class="social-card">
+            <i class="fa-brands fa-whatsapp text-base"></i> WhatsApp
+          </a>
+          <a href="https://www.linkedin.com/in/rahul-mandal-066231249/" target="_blank" rel="noopener" class="social-card">
+            <i class="fa-brands fa-linkedin text-base"></i> LinkedIn
+          </a>
+        </div>
+      </div>
+
+      <!-- ── Right Column: Illustration ── -->
+      <div class="flex justify-center items-center">
+        <div class="illus-container relative">
+          <!-- Glow ring behind illustration -->
+          <div class="absolute inset-0 rounded-full" style="background:radial-gradient(circle, rgba(56,189,248,0.18) 0%, transparent 70%); transform:scale(1.15);"></div>
+
+          <!-- INSERT CHARACTER VECTOR IMAGE URL HERE -->
+          <img
+            src="https://cdni.iconscout.com/illustration/premium/thumb/programmer-boy-5120715-4299521.png"
+            alt="Rahul Mandal - Developer Character Vector Illustration"
+            class="w-full max-w-sm mx-auto relative"
+            style="filter: drop-shadow(0 0 30px rgba(56,189,248,0.35));"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+          />
+
+          <!-- Fallback placeholder if image fails -->
+          <div class="hidden w-72 h-72 rounded-2xl border border-border bg-surface items-center justify-center flex-col gap-3 text-muted mx-auto">
+            <i class="fa-solid fa-laptop-code text-5xl" style="color:#38BDF8; text-shadow:0 0 20px rgba(56,189,248,0.5);"></i>
+            <span class="font-mono text-xs tracking-widest">DATA SCIENTIST</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Scroll cue -->
+    <div class="flex justify-center mt-14">
+      <a href="#about" class="flex flex-col items-center gap-2 text-muted text-xs font-mono hover:text-accent transition-colors duration-200">
+        <span class="tracking-widest">SCROLL</span>
+        <i class="fa-solid fa-chevron-down text-sm animate-bounce"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     ABOUT SECTION
+════════════════════════════════════════════ -->
+<section id="about" class="py-20 px-6 relative z-base">
+  <div class="max-w-6xl mx-auto">
+    <div class="reveal">
+      <p class="section-label">// 01 — About</p>
+      <div class="divider"></div>
+      <h2 class="font-sans font-bold text-3xl text-bright mb-6">Who I Am</h2>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-8 reveal">
+      <!-- Bio -->
+      <div class="md:col-span-2 card-hover rounded-2xl p-7">
+        <p class="text-bright/80 leading-relaxed mb-4">
+          I'm <strong class="text-accent">Rahul Mandal</strong>, a Data Scientist based in <strong class="text-bright">Pune, India</strong>. With a strong foundation in computer science and specialized training in data science, I bridge the gap between raw data and strategic business decisions.
+        </p>
+        <p class="text-bright/70 leading-relaxed">
+          My toolkit spans Python, machine learning, SQL, and business intelligence platforms like Tableau. I'm passionate about uncovering patterns in complex datasets and translating them into clear, impactful stories that drive real decisions.
+        </p>
+      </div>
+
+      <!-- Quick stats -->
+      <div class="flex flex-col gap-4">
+        <div class="card-hover rounded-2xl p-6 text-center flex-1 flex flex-col items-center justify-center">
+          <div class="text-4xl font-bold font-mono" style="color:#38BDF8;">4+</div>
+          <div class="text-muted text-sm mt-1">Projects Delivered</div>
+        </div>
+        <div class="card-hover rounded-2xl p-6 text-center flex-1 flex flex-col items-center justify-center">
+          <div class="text-4xl font-bold font-mono" style="color:#06B6D4;">5</div>
+          <div class="text-muted text-sm mt-1">Certifications Earned</div>
+        </div>
+        <div class="card-hover rounded-2xl p-6 text-center flex-1 flex flex-col items-center justify-center">
+          <div class="text-4xl font-bold font-mono" style="color:#38BDF8;">∞</div>
+          <div class="text-muted text-sm mt-1">Data Curiosity</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SKILLS SECTION
+════════════════════════════════════════════ -->
+<section id="skills" class="py-20 px-6 relative z-base" style="background:linear-gradient(180deg, transparent 0%, rgba(28,37,65,0.3) 50%, transparent 100%);">
+  <div class="max-w-6xl mx-auto">
+    <div class="reveal">
+      <p class="section-label">// 02 — Core Competencies</p>
+      <div class="divider"></div>
+      <h2 class="font-sans font-bold text-3xl text-bright mb-2">Technical Arsenal</h2>
+      <p class="text-muted mb-10">Technologies and tools I work with to turn data into decisions.</p>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4 reveal">
+
+      <!-- Python -->
+      <div class="skill-card">
+        <i class="fa-brands fa-python skill-icon"></i>
+        <span class="text-bright text-sm font-semibold">Python</span>
+        <span class="text-muted text-xs mt-0.5">Core Language</span>
+      </div>
+
+      <!-- ML -->
+      <div class="skill-card">
+        <i class="fa-solid fa-brain skill-icon"></i>
+        <span class="text-bright text-sm font-semibold">ML</span>
+        <span class="text-muted text-xs mt-0.5">Scikit-learn</span>
+      </div>
+
+      <!-- SQL -->
+      <div class="skill-card">
+        <i class="fa-solid fa-database skill-icon"></i>
+        <span class="text-bright text-sm font-semibold">SQL</span>
+        <span class="text-muted text-xs mt-0.5">Queries & DBs</span>
+      </div>
+
+      <!-- Tableau -->
+      <div class="skill-card">
+        <i class="fa-solid fa-chart-bar skill-icon"></i>
+        <span class="text-bright text-sm font-semibold">Tableau</span>
+        <span class="text-muted text-xs mt-0.5">Dashboards</span>
+      </div>
+
+      <!-- Excel -->
+      <div class="skill-card">
+        <i class="fa-solid fa-file-excel skill-icon"></i>
+        <span class="text-bright text-sm font-semibold">Excel</span>
+        <span class="text-muted text-xs mt-0.5">MS Office</span>
+      </div>
+
+      <!-- EDA -->
+      <div class="skill-card">
+        <i class="fa-solid fa-magnifying-glass-chart skill-icon"></i>
+        <span class="text-bright text-sm font-semibold">EDA</span>
+        <span class="text-muted text-xs mt-0.5">Data Exploration</span>
+      </div>
+
+      <!-- BI -->
+      <div class="skill-card">
+        <i class="fa-solid fa-chart-pie skill-icon"></i>
+        <span class="text-bright text-sm font-semibold">BI Tools</span>
+        <span class="text-muted text-xs mt-0.5">Reporting</span>
+      </div>
+
+    </div>
+
+    <!-- Proficiency bars -->
+    <div class="mt-12 grid md:grid-cols-2 gap-6 reveal">
+      <div class="card-hover rounded-2xl p-7">
+        <h3 class="text-bright font-semibold mb-5 font-mono text-sm tracking-widest">PROFICIENCY LEVELS</h3>
+        <div class="space-y-4">
+          <div>
+            <div class="flex justify-between text-sm mb-1"><span class="text-muted">Python & Pandas</span><span class="text-accent font-mono">90%</span></div>
+            <div class="h-1.5 bg-border rounded-full overflow-hidden"><div class="h-full rounded-full bg-gradient-to-r from-accent to-accentAlt" style="width:90%;"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between text-sm mb-1"><span class="text-muted">Machine Learning</span><span class="text-accent font-mono">82%</span></div>
+            <div class="h-1.5 bg-border rounded-full overflow-hidden"><div class="h-full rounded-full bg-gradient-to-r from-accent to-accentAlt" style="width:82%;"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between text-sm mb-1"><span class="text-muted">SQL</span><span class="text-accent font-mono">80%</span></div>
+            <div class="h-1.5 bg-border rounded-full overflow-hidden"><div class="h-full rounded-full bg-gradient-to-r from-accent to-accentAlt" style="width:80%;"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-hover rounded-2xl p-7">
+        <h3 class="text-bright font-semibold mb-5 font-mono text-sm tracking-widest">TOOLS & PLATFORMS</h3>
+        <div class="space-y-4">
+          <div>
+            <div class="flex justify-between text-sm mb-1"><span class="text-muted">Tableau</span><span class="text-accent font-mono">85%</span></div>
+            <div class="h-1.5 bg-border rounded-full overflow-hidden"><div class="h-full rounded-full bg-gradient-to-r from-accent to-accentAlt" style="width:85%;"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between text-sm mb-1"><span class="text-muted">MS Excel</span><span class="text-accent font-mono">88%</span></div>
+            <div class="h-1.5 bg-border rounded-full overflow-hidden"><div class="h-full rounded-full bg-gradient-to-r from-accent to-accentAlt" style="width:88%;"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between text-sm mb-1"><span class="text-muted">EDA & Visualization</span><span class="text-accent font-mono">87%</span></div>
+            <div class="h-1.5 bg-border rounded-full overflow-hidden"><div class="h-full rounded-full bg-gradient-to-r from-accent to-accentAlt" style="width:87%;"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     PROJECTS SECTION
+════════════════════════════════════════════ -->
+<section id="projects" class="py-20 px-6 relative z-base">
+  <div class="max-w-6xl mx-auto">
+    <div class="reveal">
+      <p class="section-label">// 03 — Key Projects</p>
+      <div class="divider"></div>
+      <h2 class="font-sans font-bold text-3xl text-bright mb-2">Work Showcase</h2>
+      <p class="text-muted mb-10">End-to-end data science projects spanning prediction, analysis, and strategy.</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6">
+
+      <!-- Project 1 -->
+      <div class="card-hover rounded-2xl p-7 flex flex-col reveal">
+        <div class="flex items-start justify-between mb-4">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background:rgba(56,189,248,0.12); border:1px solid rgba(56,189,248,0.25);">
+            <i class="fa-solid fa-dollar-sign text-accent"></i>
+          </div>
+          <span class="text-xs font-mono text-muted">01</span>
+        </div>
+        <h3 class="text-bright font-bold text-lg mb-2">Salary / CTC Prediction for New Hires</h3>
+        <div class="flex flex-wrap gap-2 mb-4">
+          <span class="tag">Python</span>
+          <span class="tag">ML</span>
+          <span class="tag">Scikit-learn</span>
+        </div>
+        <ul class="space-y-2 text-muted text-sm flex-1">
+          <li class="flex gap-2"><i class="fa-solid fa-chevron-right text-accent text-xs mt-1 flex-shrink-0"></i> Conducted in-depth EDA on employee datasets to isolate key salary drivers and compensation patterns.</li>
+          <li class="flex gap-2"><i class="fa-solid fa-chevron-right text-accent text-xs mt-1 flex-shrink-0"></i> Developed and benchmarked multiple models (Linear Regression, Random Forest) to optimize hiring budget accuracy.</li>
+          <li class="flex gap-2"><i class="fa-solid fa-chevron-right text-accent text-xs mt-1 flex-shrink-0"></i> Applied feature engineering and cross-validation loops to improve generalization and reduce overfitting.</li>
+        </ul>
+      </div>
+
+      <!-- Project 2 -->
+      <div class="card-hover rounded-2xl p-7 flex flex-col reveal">
+        <div class="flex items-start justify-between mb-4">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background:rgba(56,189,248,0.12); border:1px solid rgba(56,189,248,0.25);">
+            <i class="fa-solid fa-bicycle text-accent"></i>
+          </div>
+          <span class="text-xs font-mono text-muted">02</span>
+        </div>
+        <h3 class="text-bright font-bold text-lg mb-2">Bike Heaven Sales Analysis</h3>
+        <div class="flex flex-wrap gap-2 mb-4">
+          <span class="tag">Python</span>
+          <span class="tag">Tableau</span>
+          <span class="tag">Data Viz</span>
+        </div>
+        <ul class="space-y-2 text-muted text-sm flex-1">
+          <li class="flex gap-2"><i class="fa-solid fa-chevron-right text-accent text-xs mt-1 flex-shrink-0"></i> Processed operational data to map sales and profitability trends across product lines and regions.</li>
+          <li class="flex gap-2"><i class="fa-solid fa-chevron-right text-accent text-xs mt-1 flex-shrink-0"></i> Isolated top-performing markets to redirect resource allocation and maximize ROI.</li>
+          <li class="flex gap-2"><i class="fa-solid fa-chevron-right text-accent text-xs mt-1 flex-shrink-0"></i> Shipped interactive Tableau dashboards enabling stakeholders to self-serve insights in real time.</li>
+        </ul>
+      </div>
+
+      <!-- Project 3 -->
+      <div class="card-hover rounded-2xl p-7 flex flex-col reveal">
+        <div class="flex items-start justify-between mb-4">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background:rgba(56,189,248,0.12); border:1px solid rgba(56,189,248,0.25);">
+            <i class="fa-solid fa-cricket-bat-ball text-accent"></i>
+          </div>
+          <span class="text-xs font-mono text-muted">03</span>
+        </div>
+        <h3 class="text-bright font-bold text-lg mb-2">IPL Franchise Auction Strategy</h3>
+        <div class="flex flex-wrap gap-2 mb-4">
+          <span class="tag">Python</span>
+          <span class="tag">SQL</span>
+          <span class="tag">Analytics</span>
+        </div>
+        <ul class="space-y-2 text-muted text-sm flex-1">
+          <li class="flex gap-2"><i class="fa-solid fa-chevron-right text-accent text-xs mt-1 flex-shrink-0"></i> Aggregated multi-season player datasets to compile a data-driven performance and valuation model.</li>
+          <li class="flex gap-2"><i class="fa-solid fa-chevron-right text-accent text-xs mt-1 flex-shrink-0"></i> Structured an optimization strategy to field a competitive, balanced roster under tight budget constraints.</li>
+          <li class="flex gap-2"><i class="fa-solid fa-chevron-right text-accent text-xs mt-1 flex-shrink-0"></i> Used SQL joins and aggregations to surface player tiers by role, form, and cost-efficiency.</li>
+        </ul>
+      </div>
+
+      <!-- Project 4 -->
+      <div class="card-hover rounded-2xl p-7 flex flex-col reveal">
+        <div class="flex items-start justify-between mb-4">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background:rgba(56,189,248,0.12); border:1px solid rgba(56,189,248,0.25);">
+            <i class="fa-solid fa-users text-accent"></i>
+          </div>
+          <span class="text-xs font-mono text-muted">04</span>
+        </div>
+        <h3 class="text-bright font-bold text-lg mb-2">WeFit Customer Analytics</h3>
+        <div class="flex flex-wrap gap-2 mb-4">
+          <span class="tag">MS-Excel</span>
+          <span class="tag">Segmentation</span>
+          <span class="tag">CRM</span>
+        </div>
+        <ul class="space-y-2 text-muted text-sm flex-1">
+          <li class="flex gap-2"><i class="fa-solid fa-chevron-right text-accent text-xs mt-1 flex-shrink-0"></i> Segmented user profiles across behavioral and demographic dimensions to isolate high-value cohorts.</li>
+          <li class="flex gap-2"><i class="fa-solid fa-chevron-right text-accent text-xs mt-1 flex-shrink-0"></i> Created targeted retention and conversion workflows mapped to user lifecycle stages.</li>
+          <li class="flex gap-2"><i class="fa-solid fa-chevron-right text-accent text-xs mt-1 flex-shrink-0"></i> Delivered actionable recommendations that informed the product and marketing roadmap.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     EDUCATION & CERTIFICATIONS
+════════════════════════════════════════════ -->
+<section id="education" class="py-20 px-6 relative z-base" style="background:linear-gradient(180deg, transparent 0%, rgba(28,37,65,0.3) 50%, transparent 100%);">
+  <div class="max-w-6xl mx-auto">
+    <div class="reveal">
+      <p class="section-label">// 04 — Education & Credentials</p>
+      <div class="divider"></div>
+      <h2 class="font-sans font-bold text-3xl text-bright mb-2">Learning Path</h2>
+      <p class="text-muted mb-10">Academic foundation and professional certifications that shaped my expertise.</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-8">
+
+      <!-- Education -->
+      <div class="reveal">
+        <h3 class="font-mono text-xs tracking-widest text-accent mb-5 flex items-center gap-2">
+          <i class="fa-solid fa-graduation-cap"></i> ACADEMIC BACKGROUND
+        </h3>
+        <div class="card-hover rounded-2xl p-7">
+          <div class="flex gap-4">
+            <div>
+              <div class="timeline-dot mt-1"></div>
+              <div class="w-px bg-border mx-auto flex-1" style="height:calc(100% - 12px); margin-left:5px;"></div>
+            </div>
+            <div class="flex-1 pb-2">
+              <p class="text-accent font-mono text-xs tracking-widest mb-1">2018 — 2021</p>
+              <h4 class="text-bright font-bold text-base mb-1">B.Sc. in Computer Science</h4>
+              <p class="text-muted text-sm">Abeda Inamdar Senior College</p>
+              <p class="text-muted/70 text-xs mt-0.5">Pune, Maharashtra, India</p>
+              <div class="mt-3 flex flex-wrap gap-2">
+                <span class="tag">Mathematics</span>
+                <span class="tag">Algorithms</span>
+                <span class="tag">Data Structures</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Certifications -->
+      <div class="reveal">
+        <h3 class="font-mono text-xs tracking-widest text-accent mb-5 flex items-center gap-2">
+          <i class="fa-solid fa-certificate"></i> INTERNSHALA CERTIFICATIONS
+        </h3>
+        <div class="space-y-3">
+
+          <div class="cert-badge">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-bright text-sm font-semibold">Data Science</p>
+                <p class="text-muted text-xs">Internshala Training</p>
+              </div>
+              <span class="font-mono text-xs text-accent bg-accent/10 border border-accent/20 px-2 py-0.5 rounded-full">Oct 2024</span>
+            </div>
+          </div>
+
+          <div class="cert-badge">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-bright text-sm font-semibold">Machine Learning with Python</p>
+                <p class="text-muted text-xs">Internshala Training</p>
+              </div>
+              <span class="font-mono text-xs text-accent bg-accent/10 border border-accent/20 px-2 py-0.5 rounded-full">Sep 2024</span>
+            </div>
+          </div>
+
+          <div class="cert-badge">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-bright text-sm font-semibold">Tableau for Data Visualization</p>
+                <p class="text-muted text-xs">Internshala Training</p>
+              </div>
+              <span class="font-mono text-xs text-accent bg-accent/10 border border-accent/20 px-2 py-0.5 rounded-full">Aug 2024</span>
+            </div>
+          </div>
+
+          <div class="cert-badge">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-bright text-sm font-semibold">SQL for Data Science</p>
+                <p class="text-muted text-xs">Internshala Training</p>
+              </div>
+              <span class="font-mono text-xs text-accent bg-accent/10 border border-accent/20 px-2 py-0.5 rounded-full">Jul 2024</span>
+            </div>
+          </div>
+
+          <div class="cert-badge">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-bright text-sm font-semibold">Excel for Data Analysis</p>
+                <p class="text-muted text-xs">Internshala Training</p>
+              </div>
+              <span class="font-mono text-xs text-accent bg-accent/10 border border-accent/20 px-2 py-0.5 rounded-full">Jun 2024</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     CONTACT SECTION
+════════════════════════════════════════════ -->
+<section id="contact" class="py-20 px-6 relative z-base">
+  <div class="max-w-6xl mx-auto">
+    <div class="reveal">
+      <p class="section-label">// 05 — Contact</p>
+      <div class="divider"></div>
+      <h2 class="font-sans font-bold text-3xl text-bright mb-2">Let's Connect</h2>
+      <p class="text-muted mb-10">Got a project in mind or want to collaborate? Send me a message.</p>
+    </div>
+
+    <div class="grid md:grid-cols-5 gap-8">
+
+      <!-- Contact info column -->
+      <div class="md:col-span-2 reveal">
+        <div class="card-hover rounded-2xl p-7 h-full flex flex-col gap-6">
+          <div>
+            <p class="font-mono text-xs text-accent tracking-widest mb-4">GET IN TOUCH</p>
+            <p class="text-bright/75 text-sm leading-relaxed">Open to full-time roles, freelance analytics work, and collaboration on data-driven projects.</p>
+          </div>
+
+          <div class="space-y-4">
+            <div class="flex items-center gap-3 text-muted text-sm">
+              <div class="w-8 h-8 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center flex-shrink-0">
+                <i class="fa-solid fa-location-dot text-accent text-xs"></i>
+              </div>
+              Pune, Maharashtra, India
+            </div>
+            <div class="flex items-center gap-3 text-muted text-sm">
+              <div class="w-8 h-8 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center flex-shrink-0">
+                <i class="fa-brands fa-github text-accent text-xs"></i>
+              </div>
+              <a href="https://github.com/rahul261098" target="_blank" class="hover:text-accent transition-colors">github.com/rahulmandal</a>
+            </div>
+            <div class="flex items-center gap-3 text-muted text-sm">
+              <div class="w-8 h-8 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center flex-shrink-0">
+                <i class="fa-brands fa-linkedin text-accent text-xs"></i>
+              </div>
+              <a href="https://www.linkedin.com/in/rahul-mandal-066231249/" target="_blank" class="hover:text-accent transition-colors">linkedin.com/in/rahulmandal</a>
+            </div>
+             <div class="flex items-center gap-3 text-muted text-sm">
+              <div class="w-8 h-8 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center flex-shrink-0">
+                <i class="fa-brands fa-whatsapp text-accent text-xs"></i>
+              </div>
+              <a href="https://wa.link/p1uoki" target="_blank" class="hover:text-accent transition-colors">WhatsApp</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact form -->
+      <div class="md:col-span-3 reveal">
+        <div class="card-hover rounded-2xl p-7">
+          <form action="https://formsubmit.co/rahulmandalin1998@email.com" method="POST">
+
+            <!-- Anti-spam hidden fields -->
+            <input type="hidden" name="_captcha" value="false" />
+            <input type="hidden" name="_subject" value="New Portfolio Contact from Website" />
+            <!-- Optional: redirect after submission -->
+            <!-- <input type="hidden" name="_next" value="https://yoursite.com/thanks.html"> -->
+
+            <div class="grid sm:grid-cols-2 gap-4 mb-4">
+              <div>
+                <label class="block text-muted text-xs font-mono tracking-widest mb-2">FULL NAME</label>
+                <input
+                  type="text"
+                  name="name"
+                  required
+                  placeholder="John Doe"
+                  class="form-input"
+                />
+              </div>
+              <div>
+                <label class="block text-muted text-xs font-mono tracking-widest mb-2">EMAIL ADDRESS</label>
+                <input
+                  type="email"
+                  name="email"
+                  required
+                  placeholder="john@example.com"
+                  class="form-input"
+                />
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label class="block text-muted text-xs font-mono tracking-widest mb-2">SUBJECT</label>
+              <input
+                type="text"
+                name="_subject"
+                placeholder="Project Collaboration / Job Opportunity"
+                class="form-input"
+              />
+            </div>
+
+            <div class="mb-6">
+              <label class="block text-muted text-xs font-mono tracking-widest mb-2">MESSAGE</label>
+              <textarea
+                name="message"
+                required
+                rows="5"
+                placeholder="Tell me about your project or opportunity..."
+                class="form-input resize-none"
+              ></textarea>
+            </div>
+
+            <button type="submit" class="btn-glow w-full py-3 rounded-lg text-sm font-bold flex items-center justify-center gap-2">
+              <i class="fa-solid fa-paper-plane text-xs"></i> Send Message
+            </button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════ -->
+<footer class="py-8 px-6 border-t border-border relative z-base">
+  <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+    <p class="font-mono text-xs text-muted">
+      <span style="color:#38BDF8;">&lt;</span> Rahul Mandal <span style="color:#38BDF8;">/&gt;</span>
+      &nbsp;— Data Scientist, Pune
+    </p>
+    <p class="font-mono text-xs text-muted">
+      © 2024 · Built with <span style="color:#38BDF8;">♥</span> & Python
+    </p>
+    <div class="flex gap-4">
+      <a href="https://github.com/rahul261098" target="_blank" class="text-muted hover:text-accent transition-colors text-sm"><i class="fa-brands fa-github"></i></a>
+      <a href="https://hackerrank.com" target="_blank" class="text-muted hover:text-accent transition-colors text-sm"><i class="fa-brands fa-hackerrank"></i></a>
+      <a href="https://www.linkedin.com/in/rahul-mandal-066231249/" target="_blank" class="text-muted hover:text-accent transition-colors text-sm"><i class="fa-brands fa-linkedin"></i></a>
+     <a href="https://wa.link/p1uoki" target="_blank" class="text-muted hover:text-accent transition-colors text-sm"><i class="fa-brands fa-whatsapp"></i></a>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════════ -->
+<script>
+  /* ── Sticky navbar scroll effect ── */
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+      navbar.classList.add('scrolled');
+    } else {
+      navbar.classList.remove('scrolled');
+    }
+  });
+
+  /* ── Mobile menu toggle ── */
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  hamburger.addEventListener('click', (e) => {
+    e.stopPropagation();
+    mobileMenu.classList.toggle('open');
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!mobileMenu.contains(e.target) && e.target !== hamburger) {
+      mobileMenu.classList.remove('open');
+    }
+  });
+
+  function closeMobile() {
+    mobileMenu.classList.remove('open');
+  }
+
+  /* ── Scroll reveal observer ── */
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+        }, 80 * (i % 4));
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+  reveals.forEach(el => observer.observe(el));
+
+  /* ── Active nav link highlighting ── */
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-link');
+
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.getAttribute('id');
+        navLinks.forEach(link => {
+          link.style.color = link.getAttribute('href') === `#${id}` ? '#38BDF8' : '';
+        });
+      }
+    });
+  }, { threshold: 0.4 });
+
+  sections.forEach(s => sectionObserver.observe(s));
+
+  /* ── Typewriter effect for subtitle ── */
+  const titles = ['Data Scientist', 'ML Engineer', 'BI Analyst', 'Python Developer'];
+  let titleIdx = 0, charIdx = 0, deleting = false;
+  const cursorEl = document.querySelector('.cursor');
+
+  function typewrite() {
+    const current = titles[titleIdx];
+    if (!deleting) {
+      cursorEl.textContent = current.substring(0, charIdx + 1);
+      charIdx++;
+      if (charIdx === current.length) {
+        deleting = true;
+        setTimeout(typewrite, 1800);
+        return;
+      }
+    } else {
+      cursorEl.textContent = current.substring(0, charIdx - 1);
+      charIdx--;
+      if (charIdx === 0) {
+        deleting = false;
+        titleIdx = (titleIdx + 1) % titles.length;
+      }
+    }
+    setTimeout(typewrite, deleting ? 55 : 90);
+  }
+  setTimeout(typewrite, 1200);
+</script>
+
+</body>
+</html>
